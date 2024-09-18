@@ -1,157 +1,196 @@
-# mysql
+CREATE DATABASE aulabanco;
+USE aulabanco;
 
-
-
-
-# TABELAS 
--- Criação do banco de dados
-CREATE DATABASE AulaBanco;
-USE AulaBanco;
-
--- Tabela de Alunos
-CREATE TABLE Alunos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE Clientes (
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
-    idade INT,
+    cpf VARCHAR(11),
     email VARCHAR(100),
     telefone VARCHAR(15),
-    endereco VARCHAR(255)
+    endereco VARCHAR(200)
+);
+CREATE TABLE Contas (
+    id_conta INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT,
+    tipo_conta VARCHAR(50),
+    saldo DECIMAL(10, 2),
+    agencia VARCHAR(10),
+    data_abertura DATE,
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente)
 );
 
--- Tabela de Cursos
-CREATE TABLE Cursos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100),
-    descricao TEXT,
-    duracao INT,  -- duração em horas
-    preco DECIMAL(10, 2),
-    professor_id INT
-);
-
--- Tabela de Professores
-CREATE TABLE Professores (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100),
-    especialidade VARCHAR(100),
-    email VARCHAR(100),
-    telefone VARCHAR(15),
-    salario DECIMAL(10, 2)
-);
-
--- Tabela de Matrículas
-CREATE TABLE Matriculas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    aluno_id INT,
-    curso_id INT,
-    data_matricula DATE,
-    status ENUM('Ativo', 'Inativo'),
-    nota DECIMAL(5, 2)
-);
-
--- Tabela de Pagamentos
-CREATE TABLE Pagamentos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    matricula_id INT,
-    data_pagamento DATE,
+CREATE TABLE Transacoes (
+    id_transacao INT AUTO_INCREMENT PRIMARY KEY,
+    id_conta INT,
+    tipo_transacao VARCHAR(50),
     valor DECIMAL(10, 2),
-    metodo_pagamento ENUM('Cartão', 'Boleto', 'Transferência'),
-    status ENUM('Pendente', 'Confirmado')
+    data_transacao DATE,
+    descricao VARCHAR(200),
+    FOREIGN KEY (id_conta) REFERENCES Contas(id_conta)
 );
 
-# 2. Inserções de Dados sql
+CREATE TABLE Funcionarios (
+    id_funcionario INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    cargo VARCHAR(100),
+    salario DECIMAL(10, 2),
+    data_contratacao DATE,
+    departamento VARCHAR(100)
+);
 
--- Inserções na tabela Alunos
-INSERT INTO Alunos (nome, idade, email, telefone, endereco) VALUES
-('Ana Silva', 21, 'ana.silva@email.com', '1234567890', 'Rua A, 123'),
-('João Santos', 22, 'joao.santos@email.com', '1234567891', 'Rua B, 456'),
-('Maria Oliveira', 23, 'maria.oliveira@email.com', '1234567892', 'Rua C, 789'),
-('Pedro Costa', 24, 'pedro.costa@email.com', '1234567893', 'Rua D, 101'),
-('Juliana Pereira', 20, 'juliana.pereira@email.com', '1234567894', 'Rua E, 202'),
-('Lucas Almeida', 22, 'lucas.almeida@email.com', '1234567895', 'Rua F, 303'),
-('Fernanda Lima', 25, 'fernanda.lima@email.com', '1234567896', 'Rua G, 404'),
-('Carlos Souza', 23, 'carlos.souza@email.com', '1234567897', 'Rua H, 505'),
-('Mariana Fernandes', 24, 'mariana.fernandes@email.com', '1234567898', 'Rua I, 606'),
-('Roberto Lima', 21, 'roberto.lima@email.com', '1234567899', 'Rua J, 707');
+CREATE TABLE Agencias (
+    id_agencia INT AUTO_INCREMENT PRIMARY KEY,
+    nome_agencia VARCHAR(100),
+    endereco VARCHAR(200),
+    telefone VARCHAR(15),
+    gerente VARCHAR(100),
+    numero_funcionarios INT
+);
 
--- Inserções na tabela Cursos
-INSERT INTO Cursos (nome, descricao, duracao, preco, professor_id) VALUES
-('Matemática Básica', 'Curso introdutório de matemática', 40, 500.00, 1),
-('Física Avançada', 'Curso avançado de física', 60, 800.00, 2),
-('Programação em Python', 'Curso de programação com Python', 50, 600.00, 3),
-('História do Brasil', 'Curso sobre a história do Brasil', 45, 450.00, 4),
-('Química Orgânica', 'Curso sobre química orgânica', 55, 700.00, 5),
-('Economia', 'Curso de introdução à economia', 35, 400.00, 1),
-('Literatura Brasileira', 'Estudo da literatura brasileira', 50, 550.00, 2),
-('Biologia Molecular', 'Curso sobre biologia molecular', 60, 750.00, 3),
-('Direito Constitucional', 'Curso de direito constitucional', 40, 500.00, 4),
-('Arquitetura e Urbanismo', 'Curso sobre arquitetura e urbanismo', 70, 900.00, 5);
+INSERT INTO Clientes (nome, cpf, email, telefone, endereco) VALUES
+('João Silva', '12345678900', 'joao@gmail.com', '1111-2222', 'Rua A, 123'),
+('Maria Santos', '98765432100', 'maria@gmail.com', '3333-4444', 'Rua B, 456'),
+('Pedro Souza', '45678912300', 'pedro@gmail.com', '5555-6666', 'Rua C, 789'),
+('Ana Oliveira', '78912345600', 'ana@gmail.com', '7777-8888', 'Rua D, 321'),
+('Lucas Costa', '32165498700', 'lucas@gmail.com', '9999-0000', 'Rua E, 654'),
+('Carla Nunes', '65498732100', 'carla@gmail.com', '2222-3333', 'Rua F, 987'),
+('Felipe Alves', '98732165400', 'felipe@gmail.com', '4444-5555', 'Rua G, 432'),
+('Bruna Lima', '32178945600', 'bruna@gmail.com', '6666-7777', 'Rua H, 765'),
+('Gustavo Pereira', '65412378900', 'gustavo@gmail.com', '8888-9999', 'Rua I, 876'),
+('Julia Rocha', '98765478900', 'julia@gmail.com', '0000-1111', 'Rua J, 543');
 
--- Inserções na tabela Professores
-INSERT INTO Professores (nome, especialidade, email, telefone, salario) VALUES
-('Dr. João Lima', 'Matemática', 'joao.lima@email.com', '1234567801', 5000.00),
-('Profa. Ana Costa', 'Física', 'ana.costa@email.com', '1234567802', 6000.00),
-('Dr. Pedro Rocha', 'Programação', 'pedro.rocha@email.com', '1234567803', 5500.00),
-('Profa. Maria Silva', 'História', 'maria.silva@email.com', '1234567804', 4800.00),
-('Dr. Carlos Almeida', 'Química', 'carlos.almeida@email.com', '1234567805', 6500.00),
-('Profa. Juliana Sousa', 'Economia', 'juliana.sousa@email.com', '1234567806', 5000.00),
-('Dr. Fernando Oliveira', 'Literatura', 'fernando.oliveira@email.com', '1234567807', 5400.00),
-('Profa. Fernanda Costa', 'Biologia', 'fernanda.costa@email.com', '1234567808', 7000.00),
-('Dr. Roberto Santos', 'Direito', 'roberto.santos@email.com', '1234567809', 5500.00),
-('Profa. Mariana Pereira', 'Arquitetura', 'mariana.pereira@email.com', '1234567810', 7500.00);
+INSERT INTO Contas (id_cliente, tipo_conta, saldo, agencia, data_abertura) VALUES
+(1, 'Corrente', 1000.50, '001', '2023-01-01'),
+(2, 'Poupança', 1500.00, '002', '2023-02-01'),
+(3, 'Corrente', 2000.75, '001', '2023-03-01'),
+(4, 'Poupança', 2500.20, '003', '2023-04-01'),
+(5, 'Corrente', 3000.00, '001', '2023-05-01'),
+(6, 'Poupança', 3500.45, '002', '2023-06-01'),
+(7, 'Corrente', 4000.90, '003', '2023-07-01'),
+(8, 'Poupança', 4500.30, '001', '2023-08-01'),
+(9, 'Corrente', 5000.15, '002', '2023-09-01'),
+(10, 'Poupança', 5500.80, '003', '2023-10-01');
 
--- Inserções na tabela Matriculas
-INSERT INTO Matriculas (aluno_id, curso_id, data_matricula, status, nota) VALUES
-(1, 1, '2024-01-10', 'Ativo', 8.5),
-(2, 2, '2024-01-15', 'Ativo', 9.0),
-(3, 3, '2024-02-01', 'Ativo', 7.5),
-(4, 4, '2024-02-10', 'Inativo', 6.0),
-(5, 5, '2024-03-01', 'Ativo', 9.2),
-(6, 6, '2024-03-15', 'Ativo', 8.0),
-(7, 7, '2024-04-01', 'Ativo', 7.8),
-(8, 8, '2024-04-10', 'Inativo', 5.9),
-(9, 9, '2024-05-01', 'Ativo', 8.3),
-(10, 10, '2024-05-15', 'Ativo', 9.1);
+INSERT INTO Transacoes (id_conta, tipo_transacao, valor, data_transacao, descricao) VALUES
+(1, 'Depósito', 500.00, '2023-01-10', 'Depósito inicial'),
+(2, 'Saque', 200.00, '2023-02-12', 'Saque ATM'),
+(3, 'Depósito', 300.00, '2023-03-15', 'Depósito em caixa'),
+(4, 'Transferência', 400.00, '2023-04-18', 'Transferência para conta 5'),
+(5, 'Saque', 250.00, '2023-05-20', 'Saque em agência'),
+(6, 'Depósito', 600.00, '2023-06-25', 'Depósito em caixa eletrônico'),
+(7, 'Transferência', 700.00, '2023-07-28', 'Transferência para conta 8'),
+(8, 'Saque', 350.00, '2023-08-30', 'Saque no caixa eletrônico'),
+(9, 'Depósito', 800.00, '2023-09-05', 'Depósito via transferência'),
+(10, 'Saque', 450.00, '2023-10-10', 'Saque no caixa eletrônico');
 
--- Inserções na tabela Pagamentos
-INSERT INTO Pagamentos (matricula_id, data_pagamento, valor, metodo_pagamento, status) VALUES
-(1, '2024-01-12', 500.00, 'Cartão', 'Confirmado'),
-(2, '2024-01-18', 800.00, 'Boleto', 'Confirmado'),
-(3, '2024-02-05', 600.00, 'Transferência', 'Pendente'),
-(4, '2024-02-12', 450.00, 'Cartão', 'Confirmado'),
-(5, '2024-03-05', 700.00, 'Boleto', 'Confirmado'),
-(6, '2024-03-20', 400.00, 'Transferência', 'Pendente'),
-(7, '2024-04-03', 550.00, 'Cartão', 'Confirmado'),
-(8, '2024-04-15', 750.00, 'Boleto', 'Confirmado'),
-(9, '2024-05-05', 500.00, 'Transferência', 'Pendente'),
-(10, '2024-05-20', 900.00, 'Cartão', 'Confirmado');
+INSERT INTO Funcionarios (nome, cargo, salario, data_contratacao, departamento) VALUES
+('Carlos Pereira', 'Gerente', 7500.00, '2020-01-01', 'Gerência'),
+('Mariana Sousa', 'Atendente', 2500.00, '2021-02-15', 'Atendimento'),
+('Fernanda Alves', 'Caixa', 3000.00, '2019-03-20', 'Operacional'),
+('Roberto Nunes', 'Analista', 5000.00, '2020-04-10', 'TI'),
+('Juliana Lima', 'Supervisora', 6000.00, '2021-05-05', 'Supervisão'),
+('Tiago Silva', 'Vendedor', 4000.00, '2022-06-12', 'Comercial'),
+('Larissa Costa', 'Caixa', 3200.00, '2018-07-18', 'Operacional'),
+('Paulo Rocha', 'Analista', 5200.00, '2020-08-25', 'TI'),
+('Patrícia Dias', 'Atendente', 2600.00, '2022-09-01', 'Atendimento'),
+('Rafael Souza', 'Vendedor', 4200.00, '2019-10-10', 'Comercial');
 
-# 3. Atualizações de Dados sql
+INSERT INTO Agencias (nome_agencia, endereco, telefone, gerente, numero_funcionarios) VALUES
+('Agencia Central', 'Rua Central, 123', '1111-2222', 'Carlos Pereira', 10),
+('Agencia Norte', 'Rua Norte, 456', '3333-4444', 'Mariana Sousa', 8),
+('Agencia Sul', 'Rua Sul, 789', '5555-6666', 'Fernanda Alves', 12),
+('Agencia Leste', 'Rua Leste, 321', '7777-8888', 'Roberto Nunes', 7),
+('Agencia Oeste', 'Rua Oeste, 654', '9999-0000', 'Juliana Lima', 15),
+('Agencia Central 2', 'Rua Central 2, 987', '2222-3333', 'Tiago Silva', 9),
+('Agencia Norte 2', 'Rua Norte 2, 432', '4444-5555', 'Larissa Costa', 11),
+('Agencia Sul 2', 'Rua Sul 2, 765', '6666-7777', 'Paulo Rocha', 13),
+('Agencia Leste 2', 'Rua Leste 2, 876', '8888-9999', 'Patrícia Dias', 6),
+('Agencia Oeste 2', 'Rua Oeste 2, 543', '0000-1111', 'Rafael Souza', 14);
 
--- Atualizações na tabela Alunos
-UPDATE Alunos SET idade = 22 WHERE id = 1;
-UPDATE Alunos SET telefone = '1234567891' WHERE id = 2;
-UPDATE Alunos SET endereco = 'Rua X, 808' WHERE id = 3;
-UPDATE Alunos SET email = 'pedro.costa@novoemail.com' WHERE id = 4;
-UPDATE Alunos SET nome = 'Juliana Lima' WHERE id = 5;
-UPDATE Alunos SET idade = 23 WHERE id = 6;
-UPDATE Alunos SET telefone = '1234567896' WHERE id = 7;
-UPDATE Alunos SET endereco = 'Rua K, 909' WHERE id = 8;
-UPDATE Alunos SET email = 'mariana.fernandes@novoemail.com' WHERE id = 9;
-UPDATE Alunos SET nome = 'Roberto Souza' WHERE id = 10;
+UPDATE Clientes SET telefone = '9999-8888' WHERE id_cliente = 1;
+UPDATE Clientes SET endereco = 'Rua Z, 987' WHERE id_cliente = 2;
+UPDATE Clientes SET nome = 'Pedro Henrique' WHERE id_cliente = 3;
+UPDATE Clientes SET email = 'ana_new@hotmail.com' WHERE id_cliente = 4;
+UPDATE Clientes SET cpf = '12345678911' WHERE id_cliente = 5;
+UPDATE Clientes SET telefone = '8888-7777' WHERE id_cliente = 6;
+UPDATE Clientes SET endereco = 'Rua Y, 654' WHERE id_cliente = 7;
+UPDATE Clientes SET email = 'bruna_new@hotmail.com' WHERE id_cliente = 8;
+UPDATE Clientes SET nome = 'Gustavo Silva' WHERE id_cliente = 9;
+UPDATE Clientes SET cpf = '98765478911' WHERE id_cliente = 10;
 
--- Atualizações na tabela Cursos
+UPDATE Contas SET saldo = 1050.50 WHERE id_conta = 1;
+UPDATE Contas SET agencia = '004' WHERE id_conta = 2;
+UPDATE Contas SET saldo = 2050.75 WHERE id_conta = 3;
+UPDATE Contas SET tipo_conta = 'Corrente' WHERE id_conta = 4;
+UPDATE Contas SET saldo = 3050.00 WHERE id_conta = 5;
+UPDATE Contas SET agencia = '005' WHERE id_conta = 6;
+UPDATE Contas SET saldo = 4050.90 WHERE id_conta = 7;
+UPDATE Contas SET tipo_conta = 'Corrente' WHERE id_conta = 8;
+UPDATE Contas SET saldo = 5050.15 WHERE id_conta = 9;
+UPDATE Contas SET agencia = '006' WHERE id_conta = 10;
 
-UPDATE Cursos SET idade = 22 WHERE id = 1;
-UPDATE Cursos SET telefone = '1234567891' WHERE id = 2;
-UPDATE Cursos SET endereco = 'Rua X, 808' WHERE id = 3;
-UPDATE Cursos SET email = 'pedro.costa@novoemail.com' WHERE id = 4;
-UPDATE Cursos SET nome = 'Juliana Lima' WHERE id = 5;
-UPDATE Cursos SET idade = 23 WHERE id = 6;
-UPDATE Cursos SET telefone = '1234567896' WHERE id = 7;
-UPDATE Cursos SET endereco = 'Rua K, 909' WHERE id = 8;
-UPDATE Cursos SET email = 'mariana.fernandes@novoemail.com' WHERE id = 9;
-UPDATE Cursos SET nome = 'Roberto Souza' WHERE id = 10;
+UPDATE Transacoes SET valor = 600.00 WHERE id_transacao = 1;
+UPDATE Transacoes SET descricao = 'Saque rápido' WHERE id_transacao = 2;
+UPDATE Transacoes SET valor = 350.00 WHERE id_transacao = 3;
+UPDATE Transacoes SET descricao = 'Transferência bancária' WHERE id_transacao = 4;
+UPDATE Transacoes SET valor = 260.00 WHERE id_transacao = 5;
+UPDATE Transacoes SET descricao = 'Depósito via app' WHERE id_transacao = 6;
+UPDATE Transacoes SET valor = 750.00 WHERE id_transacao = 7;
+UPDATE Transacoes SET descricao = 'Saque no caixa' WHERE id_transacao = 8;
+UPDATE Transacoes SET valor = 820.00 WHERE id_transacao = 9;
+UPDATE Transacoes SET descricao = 'Saque express' WHERE id_transacao = 10;
 
+UPDATE Funcionarios SET salario = 7800.00 WHERE id_funcionario = 1;
+UPDATE Funcionarios SET cargo = 'Gerente de Operações' WHERE id_funcionario = 2;
+UPDATE Funcionarios SET salario = 3200.00 WHERE id_funcionario = 3;
+UPDATE Funcionarios SET departamento = 'TI' WHERE id_funcionario = 4;
+UPDATE Funcionarios SET cargo = 'Supervisora de Vendas' WHERE id_funcionario = 5;
+UPDATE Funcionarios SET salario = 4200.00 WHERE id_funcionario = 6;
+UPDATE Funcionarios SET departamento = 'Atendimento' WHERE id_funcionario = 7;
+UPDATE Funcionarios SET salario = 5500.00 WHERE id_funcionario = 8;
+UPDATE Funcionarios SET departamento = 'Vendas' WHERE id_funcionario = 9;
+UPDATE Funcionarios SET cargo = 'Vendedor Sênior' WHERE id_funcionario = 10;
+
+UPDATE Agencias SET numero_funcionarios = 12 WHERE id_agencia = 1;
+UPDATE Agencias SET telefone = '1111-3333' WHERE id_agencia = 2;
+UPDATE Agencias SET gerente = 'Carlos Andrade' WHERE id_agencia = 3;
+UPDATE Agencias SET nome_agencia = 'Agencia Leste Nova' WHERE id_agencia = 4;
+UPDATE Agencias SET endereco = 'Rua Oeste, 123' WHERE id_agencia = 5;
+UPDATE Agencias SET numero_funcionarios = 10 WHERE id_agencia = 6;
+UPDATE Agencias SET telefone = '2222-4444' WHERE id_agencia = 7;
+UPDATE Agencias SET gerente = 'Paulo Henrique' WHERE id_agencia = 8;
+UPDATE Agencias SET nome_agencia = 'Agencia Sul Nova' WHERE id_agencia = 9;
+UPDATE Agencias SET telefone = '3333-5555' WHERE id_agencia = 10;
+
+DELETE FROM Clientes WHERE id_cliente = 1;
+DELETE FROM Clientes WHERE id_cliente = 2;
+DELETE FROM Clientes WHERE id_cliente = 3;
+DELETE FROM Clientes WHERE id_cliente = 4;
+DELETE FROM Clientes WHERE id_cliente = 5;
+
+DELETE FROM Contas WHERE id_conta = 1;
+DELETE FROM Contas WHERE id_conta = 2;
+DELETE FROM Contas WHERE id_conta = 3;
+DELETE FROM Contas WHERE id_conta = 4;
+DELETE FROM Contas WHERE id_conta = 5;
+
+DELETE FROM Transacoes WHERE id_transacao = 1;
+DELETE FROM Transacoes WHERE id_transacao = 2;
+DELETE FROM Transacoes WHERE id_transacao = 3;
+DELETE FROM Transacoes WHERE id_transacao = 4;
+DELETE FROM Transacoes WHERE id_transacao = 5;
+
+DELETE FROM Funcionarios WHERE id_funcionario = 1;
+DELETE FROM Funcionarios WHERE id_funcionario = 2;
+DELETE FROM Funcionarios WHERE id_funcionario = 3;
+DELETE FROM Funcionarios WHERE id_funcionario = 4;
+DELETE FROM Funcionarios WHERE id_funcionario = 5;
+
+DELETE FROM Agencias WHERE id_agencia = 1;
+DELETE FROM Agencias WHERE id_agencia = 2;
+DELETE FROM Agencias WHERE id_agencia = 3;
+DELETE FROM Agencias WHERE id_agencia = 4;
+DELETE FROM Agencias WHERE id_agencia = 5;
 
 
 
